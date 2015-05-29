@@ -23,7 +23,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['mandante', 'avatar', 'name', 'email', 'password'];
+//	protected $fillable = ['mandante', 'avatar', 'name', 'email', 'password'];
+    protected $fillable = [
+        'mandante',
+        'name',
+        'email', 'password', 'username', 'avatar','provider_id', 'provider'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -46,6 +50,52 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function articles(){
         return $this->hasMany('Article');
+    }
+
+    /**
+     * User can have one Partner.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function partner(){
+        return $this->hasOne('Partner');
+    }
+
+    /**
+     * Save a new model and return the instance.
+     *
+     * @param  array  $attributes
+     * @return static
+     */
+    public static function create(array $attributes)
+    {
+        $attributes['mandante'] = 'teste';
+        $model = new static($attributes);
+//        \Debugbar::info($model);
+//        dd($model);
+        $model->save();
+
+        static::createPartner($model);
+        return $model;
+    }
+
+    private static function createPartner($user){
+        $addedPartner = (new Partner)->firstOrCreate([
+            'mandante' => 'teste',
+            'user_id' => $user->id,
+            'nome' => $user->name,
+        ]);
+
+        $addedContact = (new Contact)->firstOrCreate([
+            'mandante' => 'teste',
+            'partner_id' => $addedPartner->id,
+            'contact_type' => 'email',
+            'contact_data' => $user->email,
+        ]);
+
+//        $addedPartner->user()->save($addedPartner);
+//        $user->partner()->save($addedPartner);
+//        $addedPartner->contacts()->save( (new Contact)->getAddedContact('email', $user->email));
+//        $addedPartner->contacts()->save( );
     }
 
 }

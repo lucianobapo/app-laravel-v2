@@ -220,6 +220,7 @@ return [
         /**
          * Models mapping aliases.
          */
+        'Bernardino\EasyAuthenticator\Models\User' => '\App\Models\User',
         'Article'      => '\App\Models\Article',
         'Tag'      => '\App\Models\Tag',
         'User'      => '\App\Models\User',

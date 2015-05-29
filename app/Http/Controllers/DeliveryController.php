@@ -123,8 +123,8 @@ class DeliveryController extends Controller {
 
             $id = Partner::firstByAttributes([
                 'user_id' => Auth::user()->id,
-            ])->id;
-            dd($id);
+            ]);
+//            dd($id);
             $panelListaEnderecos = view('delivery.partials.pedidoListEnderecos')->with([
                 'enderecos' => Address::where([
                     'partner_id' => $id,

@@ -3,7 +3,8 @@
 return [
 
     // The model we use to interact with the database.
-    'model' => 'Bernardino\EasyAuthenticator\Models\User',
+//    'model' => 'Bernardino\EasyAuthenticator\Models\User',
+    'model' => 'App\Models\User',
 
     /**
      * The path to redirect to after successful authentication.
