@@ -120,11 +120,14 @@ class DeliveryController extends Controller {
             $panelListaEnderecos = '';
             $panelGuest = view('delivery.partials.panelGuestLogin', compact('host'));
         } else {
+
+            $id = Partner::firstByAttributes([
+                'user_id' => Auth::user()->id,
+            ])->id;
+            dd($id);
             $panelListaEnderecos = view('delivery.partials.pedidoListEnderecos')->with([
                 'enderecos' => Address::where([
-                    'partner_id' => Partner::firstByAttributes([
-                        'user_id' => Auth::user()->id,
-                    ])->id,
+                    'partner_id' => $id,
                 ])->get(),
             ]);
             $panelGuest = '';
