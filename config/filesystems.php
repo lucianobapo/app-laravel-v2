@@ -19,7 +19,7 @@ return [
 	'default' => 's3',
 
 	'imageLocation' => 'images',
-	'imageUrl' => 'https://s3-sa-east-1.amazonaws.com/laravel-images/images/',
+	'imageUrl' => env('S3_URL', 'your-url').env('S3_BUCKET', 'your-bucket').'/images/',
 
 	/*
 	|--------------------------------------------------------------------------
