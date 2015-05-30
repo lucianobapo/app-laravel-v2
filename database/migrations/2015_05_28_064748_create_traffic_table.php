@@ -16,7 +16,8 @@ class CreateTrafficTable extends Migration {
 		{
 			$table->increments('id');
 			$table->timestamps();
-            $table->string('user_info');
+            $table->string('remote_address',15);
+            $table->json('user_info');
             $table->json('server_info');
 		});
 	}

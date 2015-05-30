@@ -5,7 +5,8 @@
                 @include('delivery.partials.productBlock')
                 <div style="padding: 5px;">
                     <strong>
-                        {{ $row['qty'] }}x -> {{ $currency->convert($row['subtotal'])->from('BRL')->format() }}
+                        {{ $row['qty'] }}x -> {{ formatBRL($row['subtotal']) }}
+
                     </strong>
                 </div>
             </div>

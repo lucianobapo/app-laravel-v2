@@ -11,7 +11,7 @@
             <tr>
                 <td>{{ $item->product->nome }}</td>
                 <td>{{ $item->quantidade }}</td>
-                <td>{{ $currency->convert($item->valor_unitario)->from('BRL')->format() }}</td>
+                <td>{{ formatBRL($item->valor_unitario) }}</td>
             </tr>
         @endforeach
     </tbody>

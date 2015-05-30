@@ -154,11 +154,12 @@ return [
         'Laracasts\Flash\FlashServiceProvider',
         'App\Providers\ViewComposerServiceProvider',
         'App\Providers\TwitterServiceProvider',
+        'App\Providers\CurrencyServiceProvider',
         'Barryvdh\Debugbar\ServiceProvider',
         'Laravel\Socialite\SocialiteServiceProvider',
         'Gloudemans\Shoppingcart\ShoppingcartServiceProvider',
         'Bernardino\EasyAuthenticator\EasyAuthenticatorServiceProvider',
-        //'Fitztrev\LaravelHtmlMinify\LaravelHtmlMinifyServiceProvider',
+        'GrahamCampbell\HTMLMin\HTMLMinServiceProvider',
 	],
 
 	/*
@@ -212,9 +213,11 @@ return [
 
         'Flash'     => 'Laracasts\Flash\Flash',
         'Debugbar'  => 'Barryvdh\Debugbar\Facade',
-        'Twitter'   => '\App\Facades\TwitterFacade',
+        'Twitter'   => 'App\Facades\TwitterFacade',
+        'Currency'  => 'App\Facades\CurrencyFacade',
         'Socialite' => 'Laravel\Socialite\Facades\Socialite',
         'Cart'      => 'Gloudemans\Shoppingcart\Facades\Cart',
+        'HTMLMin' => 'GrahamCampbell\HTMLMin\Facades\HTMLMin',
 
 
         /**

@@ -10,14 +10,14 @@
     </div>
     @if($product->promocao)
         <div>
-            <del>{{ $currency->convert($product->valorUnitVenda)->from('BRL')->format() }}</del>
+            <del>{{ formatBRL($product->valorUnitVenda) }}</del>
         </div>
         <div>
-            {{ $currency->convert($product->valorUnitVendaPromocao)->from('BRL')->format() }}
+            {{ formatBRL($product->valorUnitVendaPromocao) }}
         </div>
     @else
         <div>
-            {{ $currency->convert($product->valorUnitVenda)->from('BRL')->format() }}
+            {{ formatBRL($product->valorUnitVenda) }}
         </div>
     @endif
 </div>

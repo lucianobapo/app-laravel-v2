@@ -16,13 +16,13 @@
                 <tr>
                     <td>{{ $order->id }}</td>
                     <td>{{ $order->partner->nome }}</td>
-                    <td>{{ $order->valor_total }}</td>
+                    <td>{{ formatBRL($order->valor_total) }}</td>
                 </tr>
                 @if(count($order->orderItems))
                     <tr>
                         <td class="text-right">{{ trans('order.listaItens').':' }}</td>
                         <td colspan="2">
-                            @include('orders.partials.itemOrder', compact('order','currency'))
+                            @include('orders.partials.itemOrder', compact('order'))
                         </td>
                     </tr>
                 @endif

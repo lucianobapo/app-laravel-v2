@@ -5,38 +5,19 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
-use Moltin\Currency\Currency as Currency;
-use Moltin\Currency\Format\Runtime as RuntimeFormat;
-use Moltin\Currency\Exchange\OpenExchangeRates as OpenExchange;
 
 class OrdersController extends Controller {
 
-    private $currency;
-
-    public function __construct(RuntimeFormat $format) {
-//        $this->middleware('auth',['except'=> ['index','show']]);
-//        $this->middleware('guest',['only'=> ['index','show']]);
-
-        $exchange = new OpenExchange(config('services.openExchangeRates.appId'));
-        $format->available['BRL'] = [
-            'format'      => 'R${price}',
-            'decimal'     => ',',
-            'thousand'    => '.'
-        ];
-        $this->currency = new Currency($exchange, $format);
-
-    }
-
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index(Order $order)
+    /**
+     * Display a listing of the resource.
+     *
+     * @param Order $order
+     * @return Response
+     */
+	public function index(Order $order, $host)
 	{
-        return view('orders.index')->with([
+        return view('orders.index', compact('host'))->with([
             'orders' => $order->all(),
-            'currency' => $this->currency,
         ]);
 	}
 

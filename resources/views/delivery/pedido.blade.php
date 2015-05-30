@@ -9,15 +9,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading text-center">
                     <h3 class="h3s">{{ $panelTitle }}</h3>
+
                 </div>
                 <div class="panel-body">
                     {!! $panelBody !!}
                 </div>
             </div>
         </div>
-
         {!! $panelGuest !!}
-
         <div class="row">
             <div class="panel panel-default">
                 <div class="panel-heading text-center">

@@ -9,15 +9,14 @@
             <tr>
                 <td>{{ $row['name'] }}</td>
                 <td>{{ $row['qty'] }}</td>
-                <td>{{ $currency->convert($row['price'])->from('BRL')->format() }}</td>
-                <td>{{ $currency->convert($row['subtotal'])->from('BRL')->format() }}</td>
+                <td>{{ formatBRL($row['price']) }}</td>
+                <td>{{ formatBRL($row['subtotal']) }}</td>
             </tr>
         @endforeach
     </tbody>
 </table>
 <div class="">
-
-    {{ trans('delivery.nav.cartTotal') }}: {{ $currency->convert(Cart::total())->from('BRL')->format() }}
+    {{ trans('delivery.nav.cartTotal') }}: {{ formatBRL(Cart::total()) }}
 </div>
 <div class="">
     {!! isset($host)? link_to_route('delivery.pedido', trans('delivery.nav.cartBtn'), $host, ['class'=>'btn btn-success']):false !!}

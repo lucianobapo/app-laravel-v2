@@ -58,26 +58,56 @@ Route::group([
     post('/addOrder', ['as'=>'delivery.addOrder', 'uses'=>'DeliveryController@addOrder']);
 });
 
-// ERP
-//Route::get('ordens', ['as'=>'ordens.index', 'uses'=>'OrdensController@index']);
-Route::resource('orders','OrdersController', [
-    'names' => [
-        'index'=>'orders.index',
-        'show'=>'orders.show',
-        'create'=>'orders.create',
-        'store'=>'orders.store',
-        'edit'=>'orders.edit',
-        'update'=>'orders.update',
-    ],
-    'only'=>[
-        'index',
-        'show',
-        'create',
-        'store',
-        'edit',
-        'update',
-    ],
-]);
+Route::group([
+    'domain' => '{host}.'.config('app.domain'),
+//    'prefix' => 'delivery',
+    'where' => ['host' => 'laravel'],
+], function(){
+    // ERP
+    //Route::get('ordens', ['as'=>'ordens.index', 'uses'=>'OrdensController@index']);
+    Route::resource('orders','OrdersController', [
+        'names' => [
+            'index'=>'orders.index',
+//            'show'=>'orders.show',
+//            'create'=>'orders.create',
+//            'store'=>'orders.store',
+//            'edit'=>'orders.edit',
+//            'update'=>'orders.update',
+        ],
+        'only'=>[
+            'index',
+//            'show',
+//            'create',
+//            'store',
+//            'edit',
+//            'update',
+        ],
+    ]);
+
+    Route::resource('products','ProductsController', [
+        'names' => [
+            'index'=>'products.index',
+            'store'=>'products.store',
+            'destroy'=>'products.destroy',
+        ],
+        'only'=>[
+            'index',
+            'store',
+            'destroy',
+        ],
+    ]);
+
+    Route::resource('sharedCurrencies','SharedCurrenciesController', [
+        'names' => [
+            'index'=>'sharedCurrencies.index',
+            'show'=>'sharedCurrencies.show',
+        ],
+        'only'=>[
+            'index',
+            'show',
+        ],
+    ]);
+});
 
 // Temporário
 Route::get('relatorios', ['as'=>'relatorios.index', 'uses'=>'RelatoriosController@index']);
@@ -123,21 +153,3 @@ Route::resource('articles','ArticlesController', [
 
 Route::get('tags/{tags}', ['as'=>'tags.show', 'uses'=>'TagsController@show']);
 
-Route::resource('sharedCurrencies','SharedCurrenciesController', [
-    'names' => [
-        'index'=>'sharedCurrencies.index',
-        'show'=>'sharedCurrencies.show',
-//        'create'=>'articles.create',
-//        'store'=>'articles.store',
-//        'edit'=>'articles.edit',
-//        'update'=>'articles.update',
-    ],
-    'only'=>[
-        'index',
-        'show',
-//        'create',
-//        'store',
-//        'edit',
-//        'update',
-    ],
-]);

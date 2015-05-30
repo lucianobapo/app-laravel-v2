@@ -18,9 +18,6 @@ use Illuminate\Html\HtmlBuilder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
-use Moltin\Currency\Currency as Currency;
-use Moltin\Currency\Format\Runtime as RuntimeFormat;
-use Moltin\Currency\Exchange\OpenExchangeRates as OpenExchange;
 
 use Illuminate\Http\Request;
 
@@ -30,10 +27,7 @@ class DeliveryController extends Controller {
      * @var CacheRepository
      */
     private $cache;
-    /**
-     * @var Currency
-     */
-    private $currency;
+
     /**
      * TotalCart
      * @var integer
@@ -54,15 +48,6 @@ class DeliveryController extends Controller {
 //        $this->middleware('guest',['only'=> ['index','show']]);
 
         $this->cache = $cache;
-
-        $exchange = new OpenExchange(config('services.openExchangeRates.appId'));
-        $format->available['BRL'] = [
-            'format'      => 'R${price}',
-            'decimal'     => ',',
-            'thousand'    => '.'
-        ];
-        $this->currency = new Currency($exchange, $format);
-
         $this->cartView = view('delivery.partials.cartVazio');
     }
 
@@ -73,16 +58,13 @@ class DeliveryController extends Controller {
     public function index(Product $product, $host){
         $this->prepareCart($host);
         if(count($products = $product->all())) {
-            $panelBody = view('delivery.partials.productList', compact('products', 'host'))->with([
-                'currency' =>$this->currency,
-            ]);
+            $panelBody = view('delivery.partials.productList', compact('products', 'host'));
         } else {
             $panelBody = trans('delivery.index.semProdutos');
         }
         return view('delivery.index', compact('host'))->with([
             'cartView' => $this->cartView,
             'totalCart' => $this->totalCart,
-            'currency' =>$this->currency,
             'panelTitle' => trans('delivery.index.panelTitle'),
             'panelBody' => $panelBody,
         ]);
@@ -101,10 +83,9 @@ class DeliveryController extends Controller {
         }
         if($request->ajax()) return Response::json( [
             'view' => view('delivery.partials.cart', compact('host'))->with([
-                'currency' =>$this->currency,
                 'cart' => Cart::content()->toArray(),
             ])->render(),
-            'total' => $this->currency->convert(Cart::total())->from('BRL')->format(),
+            'total' => formatBRL(Cart::total()),
             'btnPedido' => link_to_route('delivery.pedido', trans('delivery.nav.cartBtn'), $host, ['class'=>'btn btn-success']),
         ]);
         else return redirect(route('delivery.index', $host));
@@ -134,12 +115,10 @@ class DeliveryController extends Controller {
             $this->prepareCart($host);
 
             $panelBody = view('delivery.partials.pedidoList', compact('product', 'host'))->with([
-                'currency' =>$this->currency,
                 'cart' => Cart::content()->toArray(),
             ]);
 
             $panelFormBody = view('delivery.partials.pedidoForm', compact('product', 'host'))->with([
-                'currency' =>$this->currency,
                 'cart' => Cart::content()->toArray(),
                 'totalCartUnformatted' => Cart::total(),
                 'panelListaEnderecos' => $panelListaEnderecos,
@@ -147,7 +126,6 @@ class DeliveryController extends Controller {
             return view('delivery.pedido', compact('host'))->with([
                 'cartView' => $this->cartView,
                 'totalCart' => $this->totalCart,
-                'currency' =>$this->currency,
                 'panelTitle' => trans('delivery.pedidos.panelTitle'),
                 'panelBody' => $panelBody,
 
@@ -161,7 +139,6 @@ class DeliveryController extends Controller {
             return view('delivery.pedido', compact('host'))->with([
                 'cartView' => $this->cartView,
                 'totalCart' => $this->totalCart,
-                'currency' =>$this->currency,
                 'panelTitle' => trans('delivery.pedidos.panelTitle'),
                 'panelBody' => $panelBody,
                 'panelFormBody' => '',
@@ -185,9 +162,8 @@ class DeliveryController extends Controller {
      */
     private function prepareCart($host){
         if (Session::has('cart')){
-            $this->totalCart = $this->currency->convert(Cart::total())->from('BRL')->format();
+            $this->totalCart = formatBRL(Cart::total());
             $this->cartView = view('delivery.partials.cart', compact('host'))->with([
-                'currency' =>$this->currency,
                 'cart' => Cart::content()->toArray(),
             ]);
         }

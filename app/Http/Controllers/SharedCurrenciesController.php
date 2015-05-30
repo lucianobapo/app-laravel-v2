@@ -33,7 +33,7 @@ class SharedCurrenciesController extends Controller {
      * @param Request $request
      * @return Response
      */
-	public function index(SharedCurrency $sharedCurrency, Request $request)
+	public function index(SharedCurrency $sharedCurrency, Request $request, $host)
 	{
         $params = $request->all();
         if ( !isset($params['direction']) ) $params['direction'] = false;
@@ -41,7 +41,7 @@ class SharedCurrenciesController extends Controller {
         $sharedCurrencies = $sharedCurrency->paginate(5)->appends($params);
 //        $sharedCurrencies = $sharedCurrency->paginate(5);
 //        $sharedCurrencies = $sharedCurrency->all();
-        return view('sharedCurrencies.index',compact('sharedCurrencies', 'params'));
+        return view('sharedCurrencies.index',compact('sharedCurrencies', 'params', 'host'));
 	}
 
 	/**

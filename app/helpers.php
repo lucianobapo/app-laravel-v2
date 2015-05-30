@@ -15,12 +15,20 @@ if ( ! function_exists('labelEx')){
     }
 }
 
+if ( ! function_exists('formatBRL')){
+    function formatBRL($valor){
+        if (empty($valor)) return app('currency')->convert(0)->from('BRL')->format();
+        return app('currency')->convert($valor)->from('BRL')->format();
+    }
+}
+
 if ( ! function_exists('setTraffic')){
     function setTraffic() {
         Auth::guest()? $user = 'Guest' : $user = Auth::user()->toJson();
         if (config('app.storeTraffic'))
             \App\Models\Traffic::create([
                 'user_info' => $user,
+                'remote_address' => $_SERVER['REMOTE_ADDR'],
                 'server_info' => json_encode([
                     $_SERVER['HTTP_HOST'],
                     $_SERVER['HTTP_USER_AGENT'],

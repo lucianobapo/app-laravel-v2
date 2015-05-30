@@ -29,7 +29,7 @@ class CreateProductsTable extends Migration {
 
             $table->string('nome');
             $table->string('imagem')->nullable();
-            $table->boolean('promocao')->nullable();
+            $table->boolean('promocao')->default(0);
             $table->float('valorUnitVenda')->nullable();
             $table->float('valorUnitVendaPromocao')->nullable();
             $table->float('valorUnitCompra')->nullable();

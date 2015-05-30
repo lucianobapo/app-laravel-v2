@@ -16,8 +16,8 @@
             <ul class="nav navbar-nav">
                 <li>{!! link_to_route('index', 'Welcome') !!}</li>
                 <li>{!! link_to_route('home.index', 'Home') !!}</li>
-                <li>{!! link_to_route('contact', 'Contact') !!}</li>
-                <li>{!! link_to_route('about', 'About') !!}</li>
+                {{--<li>{!! link_to_route('contact', 'Contact') !!}</li>--}}
+                {{--<li>{!! link_to_route('about', 'About') !!}</li>--}}
                 {{--<li>{!! link_to('/') !!}</li>--}}
                 <li>{!! link_to_route('articles.index', 'List of Articles') !!}</li>
                 <li>{!! link_to_route('articles.create', 'Create an Article') !!}</li>
@@ -26,7 +26,8 @@
                 {{--<li><a href="{{ url('/articles/create') }}">Create an Article</a></li>--}}
 
                 <li>{!! link_to_route('relatorios.index', 'Relatorios') !!}</li>
-                <li>{!! link_to_route('orders.index', trans('order.menuOrder')) !!}</li>
+                <li>{!! link_to_route('orders.index', trans('order.menuOrder'), $host) !!}</li>
+                <li>{!! link_to_route('products.index', trans('product.menuProduct'), $host) !!}</li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
