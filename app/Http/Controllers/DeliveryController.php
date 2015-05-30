@@ -43,7 +43,7 @@ class DeliveryController extends Controller {
      * @param CacheRepository $cache
      * @param RuntimeFormat $format
      */
-    public function __construct(CacheRepository $cache, RuntimeFormat $format) {
+    public function __construct(CacheRepository $cache) {
 //        $this->middleware('auth',['except'=> ['index','show']]);
 //        $this->middleware('guest',['only'=> ['index','show']]);
 
