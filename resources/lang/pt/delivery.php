@@ -20,6 +20,8 @@ return array(
         'cartEmpty' => 'Carrinho vazio.',
         'cartTotal' => 'Valor Total',
         'cartBtn' => 'Fechar o Pedido',
+        'logoAlt' => 'Logomarca do site',
+        'logoTitle' => 'SeuBoteco.com',
     ],
 
     'head' => [

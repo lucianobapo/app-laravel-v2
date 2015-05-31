@@ -23,14 +23,29 @@ class ProductRequest extends Request {
 	public function rules()
 	{
         return [
-            'imagem' => 'required',
+            'imagem' => 'required|mimes:png',
 			'nome' => 'required|min:3',
-//            'body' => 'required',
-//            'published_at' => 'required|date',
+            'valorUnitVenda' => 'numeric',
+            'valorUnitVendaPromocao' => 'numeric',
+            'valorUnitCompra' => 'numeric',
+            'promocao' => 'boolean',
 		];
 	}
 
     public function validator(\Illuminate\Validation\Factory $factory){
-        return new LangValidatorRepository($factory->getTranslator(),$this->all(),$this->container->call([$this, 'rules']), array(), array(), 'product');
+        return new LangValidatorRepository(
+            $factory->getTranslator(),
+            $this->all(),
+            $this->container->call([$this, 'rules']),
+            array(),
+            [
+                'imagem'=> trans('modelProduct.attributes.imagem'),
+                'nome'=> trans('modelProduct.attributes.nome'),
+                'valorUnitVenda'=> trans('modelProduct.attributes.valorUnitVenda'),
+                'valorUnitVendaPromocao'=> trans('modelProduct.attributes.valorUnitVendaPromocao'),
+                'valorUnitCompra'=> trans('modelProduct.attributes.valorUnitCompra'),
+                'promocao'=> trans('modelProduct.attributes.promocao'),
+            ],
+            'product');
     }
 }

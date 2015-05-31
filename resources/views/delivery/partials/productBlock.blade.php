@@ -1,23 +1,23 @@
-<div class="" style="padding: 5px;">
+<div class="" style="padding: 5px; height: 150px;">
     {!! Html::image(config('filesystems.imageUrl').$product->imagem,
     trans('delivery.productBlock.imageAlt', ['product' => $product->nome]),
     ['title'=>trans('delivery.productBlock.imageAlt', ['product' => $product->nome]),
     'class'=>'img-responsive center-block']) !!}
 </div>
-<div style="padding: 5px;">
+<div class="" style="padding: 5px; height: 100px;">
     <div>
-        {{ $product->nome }}
+        <strong>{{ $product->nome }}</strong>
     </div>
     @if($product->promocao)
         <div>
-            <del>{{ formatBRL($product->valorUnitVenda) }}</del>
+            <del style="color: red;">{{ formatBRL($product->valorUnitVenda) }}</del>
         </div>
         <div>
-            {{ formatBRL($product->valorUnitVendaPromocao) }}
+            <strong style="color: #4682b4; font-size: 16px">{{ formatBRL($product->valorUnitVendaPromocao) }}</strong>
         </div>
     @else
         <div>
-            {{ formatBRL($product->valorUnitVenda) }}
+            <strong style="color: #4682b4; font-size: 16px">{{ formatBRL($product->valorUnitVenda) }}</strong>
         </div>
     @endif
 </div>

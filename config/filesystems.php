@@ -16,10 +16,12 @@ return [
 	*/
 
 //	'default' => 'local',
-	'default' => 's3',
+	'default' => env('FILESYSTEM_DEFAULT', 'local'),
 
 	'imageLocation' => 'images',
-	'imageUrl' => env('S3_URL', 'your-url').env('S3_BUCKET', 'your-bucket').'/images/',
+	'imageUrl' => (env('FILESYSTEM_DEFAULT', 'local')=='s3')?
+        env('S3_URL', 'your-url').env('S3_BUCKET', 'your-bucket').'/images/'
+        :'/images/',
 
 	/*
 	|--------------------------------------------------------------------------

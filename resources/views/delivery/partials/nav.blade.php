@@ -8,8 +8,7 @@
                 <span class="icon-bar"></span>
             </button>
             <div class="navbar-brand" style="padding: 0px 15px;">
-                {!! Html::image('/img/logo.png', '',
-                ['title'=>'', 'style'=>'max-height: 100%;']) !!}
+                {!! $brand !!}
             </div>
             {{--<a class="navbar-brand" href="#">Laravel</a>--}}
             {{--{{ App::getLocale() }}--}}

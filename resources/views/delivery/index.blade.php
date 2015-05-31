@@ -7,7 +7,10 @@
 @section('content')
     <div class="container-fluid">
         <div class="row text-center">
-            <h1 class="h1s">{{ trans('delivery.index.title') }}</h1>
+            {!! Html::image('/img/seuboteco2.png', trans('delivery.nav.logoAlt'), [
+            'title'=>trans('delivery.nav.logoTitle'),
+            'class'=>'img-responsive container-fluid']) !!}
+            {{--<h1 class="h1s">{{ trans('delivery.index.title') }}</h1>--}}
             <h2 class="h2s">{{ trans('delivery.index.subTitle') }}</h2>
         </div>
         <div class="row">

@@ -56,17 +56,28 @@ class DeliveryController extends Controller {
      * @return $this
      */
     public function index(Product $product, $host){
-        $this->prepareCart($host);
+        if (Session::has('cart')){
+            $totalCart = formatBRL(Cart::total());
+            $cartView = view('delivery.partials.cart', compact('host'))->with([
+                'cart' => Cart::content()->toArray(),
+            ]);
+        } else {
+            $totalCart = 0;
+            $cartView = view('delivery.partials.cartVazio');
+        }
         if(count($products = $product->all())) {
             $panelBody = view('delivery.partials.productList', compact('products', 'host'));
         } else {
             $panelBody = trans('delivery.index.semProdutos');
         }
-        return view('delivery.index', compact('host'))->with([
-            'cartView' => $this->cartView,
-            'totalCart' => $this->totalCart,
+        return view('delivery.index', compact(
+            'host',
+            'cartView',
+            'totalCart',
+            'panelBody'
+        ))->with([
             'panelTitle' => trans('delivery.index.panelTitle'),
-            'panelBody' => $panelBody,
+            'brand'=>'',
         ]);
 	}
 
@@ -112,39 +123,37 @@ class DeliveryController extends Controller {
         }
 
         if (Session::has('cart')){
-            $this->prepareCart($host);
-
+            $totalCart = formatBRL(Cart::total());
+            $cartView = view('delivery.partials.cart', compact('host'))->with([
+                'cart' => Cart::content()->toArray(),
+            ]);
             $panelBody = view('delivery.partials.pedidoList', compact('product', 'host'))->with([
                 'cart' => Cart::content()->toArray(),
             ]);
-
             $panelFormBody = view('delivery.partials.pedidoForm', compact('product', 'host'))->with([
                 'cart' => Cart::content()->toArray(),
                 'totalCartUnformatted' => Cart::total(),
                 'panelListaEnderecos' => $panelListaEnderecos,
             ]);
-            return view('delivery.pedido', compact('host'))->with([
-                'cartView' => $this->cartView,
-                'totalCart' => $this->totalCart,
-                'panelTitle' => trans('delivery.pedidos.panelTitle'),
-                'panelBody' => $panelBody,
-
-                'panelFormBody' => $panelFormBody,
-                'panelGuest' => $panelGuest,
-
-            ]);
-
         } else {
+            $totalCart = 0;
+            $cartView = view('delivery.partials.cartVazio');
             $panelBody = view('delivery.partials.pedidoVazio', compact('host'));
-            return view('delivery.pedido', compact('host'))->with([
-                'cartView' => $this->cartView,
-                'totalCart' => $this->totalCart,
-                'panelTitle' => trans('delivery.pedidos.panelTitle'),
-                'panelBody' => $panelBody,
-                'panelFormBody' => '',
-                'panelGuest' => $panelGuest,
-            ]);
+            $panelFormBody = '';
         }
+        return view('delivery.pedido', compact(
+            'host',
+            'cartView',
+            'totalCart',
+            'panelBody',
+            'panelFormBody',
+            'panelGuest'
+        ))->with([
+            'panelTitle' => trans('delivery.pedidos.panelTitle'),
+            'brand'=>app('html')->image('/img/seuboteco2.png', trans('delivery.nav.logoAlt'), [
+                'title'=>trans('delivery.nav.logoTitle'),
+                'style'=>'max-height: 100%;']),
+        ]);
     }
 
     /**

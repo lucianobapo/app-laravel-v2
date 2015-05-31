@@ -1,10 +1,9 @@
-
 @extends('app')
 @section('content')
     <h1 class="h1s">{{ trans('product.title') }}</h1>
     <hr>
     @include ('errors.list')
-    <table class="table table-hover">
+    <table class="table table-hover" ng-app="myApp">
         <thead>
         <tr>
             <th>{{ trans('modelProduct.attributes.id') }}</th>
@@ -43,7 +42,21 @@
                     <td>{{ formatBRL($product->valorUnitVenda) }}</td>
                     <td>{{ formatBRL($product->valorUnitVendaPromocao) }}</td>
                     <td>{{ formatBRL($product->valorUnitCompra) }}</td>
-                    <td>{!! sprintf( link_to_route('products.destroy', '%s', [$host,$product->id], ['title'=>trans('product.actionDeleteTitle')]), '<span class="glyphicon glyphicon-remove"></span>' ) !!}</td>
+                    <td>
+                        {!! Form::open([
+                            'url'=>route('products.destroy', [$host,$product->id]),
+                            'id' => 'form'.$product->id,
+                            'method' => 'DELETE',
+                        ]) !!}
+                        {{--{!! link_to('#','<span class="glyphicon glyphicon-remove"></span>', ['title'=>trans('product.actionDeleteTitle')]) !!}--}}
+                        {!! sprintf( link_to('#', '%s', [
+                            'title'=>trans('product.actionDeleteTitle'),
+                            'send-delete'=>$product->id,
+                        ]), '<span class="glyphicon glyphicon-remove"></span>' ) !!}
+                        {{--{!! sprintf( link_to_route('products.destroy', '%s', [$host,$product->id], ['title'=>trans('product.actionDeleteTitle')]), '<span class="glyphicon glyphicon-remove"></span>' ) !!}--}}
+
+                        {!! Form::close() !!}
+                    </td>
                 </tr>
             @endforeach
         @else
@@ -53,4 +66,26 @@
         @endif
         </tbody>
     </table>
+@endsection
+
+@section('footerScriptJs')
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.min.js"></script>
+
+    <script type="text/javascript">
+        var app = angular.module('myApp', []);
+//        app.controller('myCtrl', function($scope) {
+//            //            $scope.firstName= "John";
+//            //            $scope.lastName= "Doe";
+////            $scope.list = [];
+////            $scope.text = 'hello';
+//            $scope.submit = function() {
+//                if ($scope.text) {
+//                    $scope.list.push(this.text);
+//                    $scope.text = '';
+//                }
+//            };
+//        });
+    </script>
+
+    @include('angular.sendDeleteDirective')
 @endsection

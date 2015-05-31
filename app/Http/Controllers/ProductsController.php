@@ -34,12 +34,12 @@ class ProductsController extends Controller {
     {
         // doing the validation, passing post data, rules and the messages
         $uploadedFile = $request->file('imagem');
-        $clientOriginalName = str_slug(substr($uploadedFile->getClientOriginalName(),0,-4)).'.'.$uploadedFile->getClientOriginalExtension();
+        $clientOriginalName = 'imagem-de-'.str_slug(substr($uploadedFile->getClientOriginalName(),0,-4)).'.'.$uploadedFile->getClientOriginalExtension();
         // checking file is valid.
         if ($uploadedFile->isValid()) {
             $imageDir = config('filesystems.imageLocation') . DIRECTORY_SEPARATOR;
             if (!Storage::exists($imageDir)) Storage::makeDirectory($imageDir);
-            Storage::put($imageDir . $clientOriginalName, $uploadedFile);
+            Storage::put($imageDir . $clientOriginalName, file_get_contents($uploadedFile));
         } else {
             dd($clientOriginalName);
 //                // sending back with error message.
@@ -61,9 +61,20 @@ class ProductsController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $host, Product $product)
     {
-        //
+        if ($request->method()==='DELETE'){
+            $product->delete();
+            flash()->overlay(trans('product.productDeleted'),trans('product.productDeletedTitle'));
+
+            return redirect(route('products.index', $host));
+//            dd($product->id);
+//            dd($product->id);
+//            Product::find($id)->delete();
+//            dd($request->method());
+        }
+
+        dd($request->all());
     }
 
 }

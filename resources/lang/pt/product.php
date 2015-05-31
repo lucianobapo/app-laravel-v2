@@ -18,6 +18,8 @@ return array(
 	'actionDeleteTitle' => 'Remover',
 	'productCreated' => 'Produto Criado com sucesso!',
 	'productCreatedTitle' => 'Produto Criado',
+	'productDeleted' => 'Produto Removido com sucesso!',
+	'productDeletedTitle' => 'Produto Removido',
 //	'listaItens' => 'Lista de Itens',
 
 );
