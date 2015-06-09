@@ -28,9 +28,13 @@ class CreatePartnersTable extends Migration {
                 ->onUpdate('cascade');
 
             $table->string('nome');
-            $table->string('data_nascimento')->nullable();
-            $table->string('cpf')->nullable();
+            $table->timestamp('data_nascimento')->nullable();
+            $table->string('observacao')->nullable();
+
+            //temporario
+            $table->integer('old_id')->index()->nullable();
 		});
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -40,7 +44,12 @@ class CreatePartnersTable extends Migration {
 	 */
 	public function down()
 	{
+        if (DB::connection()->getName()=='mysql')
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0'); // disable foreign key constraints
 		Schema::drop('partners');
+        if (DB::connection()->getName()=='mysql')
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1'); // enable foreign key constraints
+        echo get_class($this)." is down\n";
 	}
 
 }

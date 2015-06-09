@@ -25,7 +25,7 @@
                        title="<div style='display: block; width: 150px;'>{{ trans('delivery.nav.cartHeader') }}</div>"
                        data-content="{{ $cartView }}">
                         <i class="glyphicon glyphicon-shopping-cart"></i>
-                        (<span id="cartTotal">{!! $totalCart?$totalCart:'<em>Vazio</em>' !!}</span>)
+                        (<strong id="cartTotal">{!! $totalCart?$totalCart:'<em>Vazio</em>' !!}</strong>)
                         <span class="caret"></span>
                     </a>
                 </li>
@@ -57,7 +57,9 @@
                     {{--<li><a href="{{ url('/auth/register') }}"><i class="glyphicon glyphicon-user"></i> {{ trans('delivery.nav.register') }}</a></li>--}}
                 @else
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+                        <a style="padding: 0px 15px" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <img width="50" class="img-thumbnail" src="{{ Auth::user()->avatar }}"> {{ Auth::user()->name }} <span class="caret"></span>
+                        </a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{{ url('/easyLogout') }}">Logout</a></li>
                         </ul>

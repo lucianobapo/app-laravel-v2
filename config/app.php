@@ -14,7 +14,11 @@ return [
 	*/
 
 	'debug' => env('APP_DEBUG'),
+
+    // Other stuffs
     'storeTraffic' => env('APP_STORE_TRAFFIC', false),
+    'orderItemCountMax' => env('ORDER_ITEM_COUNT_MAX', 3),
+    'mandante' => env('MANDANTE', 'teste'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -41,8 +45,9 @@ return [
 	|
 	*/
 
-	'timezone' => 'GMT',
-	//'timezone' => 'UTC',
+	'timezone' => env('TIMEZONE_LOCALE','America/Sao_Paulo'),
+//	'timezone' => 'GMT',
+//	'timezone' => 'UTC',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -229,6 +234,7 @@ return [
         'User'      => '\App\Models\User',
         'Address'      => '\App\Models\Address',
         'Contact'      => '\App\Models\Contact',
+        'Document'      => '\App\Models\Document',
 
         'OldOrder'      => '\App\Models\OldOrder',
 
@@ -236,7 +242,9 @@ return [
         'ItemOrder'      => '\App\Models\ItemOrder',
         'Order'      => '\App\Models\Order',
         'Partner'      => '\App\Models\Partner',
+        'PartnerGroup'      => '\App\Models\PartnerGroup',
         'Product'      => '\App\Models\Product',
+        'ProductGroup'      => '\App\Models\ProductGroup',
 
         'SharedCurrency'      => '\App\Models\SharedCurrency',
         'SharedOrderPayment'      => '\App\Models\SharedOrderPayment',

@@ -16,6 +16,7 @@ class CreateContactsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->timestamps();
+            $table->softDeletes();
 
             $table->string('mandante')->index();
 
@@ -33,6 +34,7 @@ class CreateContactsTable extends Migration {
             ]);
             $table->string('contact_data');
 		});
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -43,6 +45,7 @@ class CreateContactsTable extends Migration {
 	public function down()
 	{
 		Schema::drop('contacts');
+        echo get_class($this)." is down\n";
 	}
 
 }

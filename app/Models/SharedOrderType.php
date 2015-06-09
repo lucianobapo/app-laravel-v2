@@ -14,7 +14,7 @@ class SharedOrderType extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orders(){
-        return $this->hasMany('Order');
+        return $this->hasMany('Order','type_id');
     }
 
 }

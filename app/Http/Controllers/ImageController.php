@@ -14,6 +14,7 @@ class ImageController extends Controller {
 
         $headers = array();
         $headers['content-type'] = Storage::mimeType($imageDir . $file);
+        $headers['Cache-Control'] = 'max-age='.(60*60*24*7);
         $headers['content-transfer-encoding'] = 'binary';
         $headers['content-disposition'] = 'inline filename="'.$file.'"';
         $headers['content-length'] = Storage::size($imageDir . $file);

@@ -14,6 +14,7 @@ return [
 	*/
 
 	'default' => env('CACHE_DRIVER', 'file'),
+	'queryCacheTimeMinutes' => env('QUERY_CACHE_TIME_MINUTES', 0),
 
 	/*
 	|--------------------------------------------------------------------------

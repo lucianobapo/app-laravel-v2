@@ -40,6 +40,7 @@ class CreateAddressesTable extends Migration {
             //$table->boolean('cancelado');
 
 		});
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -49,7 +50,12 @@ class CreateAddressesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('addresses');
+        if (DB::connection()->getName()=='mysql')
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0'); // disable foreign key constraints
+        Schema::drop('addresses');
+        if (DB::connection()->getName()=='mysql')
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1'); // enable foreign key constraints
+        echo get_class($this)." is down\n";
 	}
 
 }

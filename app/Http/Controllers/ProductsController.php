@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Models\ProductGroup;
+use App\Models\SharedStat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -12,16 +14,32 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductsController extends Controller {
 
+    public function __construct() {
+        $this->middleware('auth',['except'=> ['index']]);
+//        $this->middleware('guest',['only'=> ['index','show']]);
+
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @param Order $order
+     * @param Product $product
+     * @param $host
      * @return Response
      */
-    public function index(Product $product, $host)
+    public function index(Product $product, Request $request, $host)
     {
+        $params = $request->all();
+        if ( !isset($params['direction']) ) $params['direction'] = false;
+        if ( isset($params['sortBy']) ) $product = $product->orderBy($params['sortBy'], ($params['direction']?'asc':'desc') );
+        else $product = $product->orderBy('nome', 'asc' );
+
         return view('products.index', compact('host'))->with([
-            'products' => $product->all(),
+//            'products' => $product->all(),
+            'products' => $product->paginate(10)->appends($params),
+            'params' => ['host'=>$host]+$params,
+            'grupos'=> ProductGroup::lists('grupo','id'),
+            'status'=> SharedStat::lists('descricao','id'),
         ]);
     }
 
@@ -47,9 +65,13 @@ class ProductsController extends Controller {
 //                return redirect(route('products.index', $host));
         }
         $attributes = $request->all();
-        $attributes['mandante'] = 'teste';
+        $attributes['mandante'] = Auth::user()->mandante;
         $attributes['imagem'] = $clientOriginalName;
-        $product->create($attributes);
+        $newProduct = $product->create($attributes);
+
+        //Adicionando Grupos
+        $this->syncGroups($newProduct, $attributes['grupos']);
+
         flash()->overlay(trans('product.productCreated'),trans('product.productCreatedTitle'));
 
         return redirect(route('products.index', $host));
@@ -73,8 +95,17 @@ class ProductsController extends Controller {
 //            Product::find($id)->delete();
 //            dd($request->method());
         }
+    }
 
-        dd($request->all());
+    /**
+     * Sync up a list of groups in the database.
+     *
+     * @param Product $product
+     * @param array $group
+     */
+    private function syncGroups(Product $product, $group)
+    {
+        $product->groups()->sync(is_null($group)?[]:$group);
     }
 
 }

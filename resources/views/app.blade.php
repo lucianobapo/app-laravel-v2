@@ -13,10 +13,6 @@
         @yield('content')
     </section>
 
-    <footer>
-        @include('partials.footer')
-        @yield('footer')
-    </footer>
-
+    @include('partials.footer')
 </body>
 </html>

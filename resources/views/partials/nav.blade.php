@@ -21,13 +21,14 @@
                 {{--<li>{!! link_to('/') !!}</li>--}}
                 <li>{!! link_to_route('articles.index', 'List of Articles') !!}</li>
                 <li>{!! link_to_route('articles.create', 'Create an Article') !!}</li>
-                <li>{!! link_to_route('sharedCurrencies.index', 'Shared Currencies') !!}</li>
+                <li>{!! link_to_route('sharedCurrencies.index', 'Shared Currencies', $host) !!}</li>
 
                 {{--<li><a href="{{ url('/articles/create') }}">Create an Article</a></li>--}}
 
                 <li>{!! link_to_route('relatorios.index', 'Relatorios') !!}</li>
                 <li>{!! link_to_route('orders.index', trans('order.menuOrder'), $host) !!}</li>
                 <li>{!! link_to_route('products.index', trans('product.menuProduct'), $host) !!}</li>
+                <li>{!! link_to_route('partners.index', trans('partner.menuName'), $host) !!}</li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">

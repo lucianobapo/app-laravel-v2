@@ -16,6 +16,7 @@ class AddExceptToArticlesTable extends Migration {
 		{
             $table->text('except')->nullable();
 		});
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -29,6 +30,7 @@ class AddExceptToArticlesTable extends Migration {
 		{
             $table->dropColumn('except');
 		});
+        echo get_class($this)." is down\n";
 	}
 
 }

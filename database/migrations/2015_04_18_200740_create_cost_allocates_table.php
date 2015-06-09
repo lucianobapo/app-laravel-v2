@@ -26,6 +26,7 @@ class CreateCostAllocatesTable extends Migration {
             $table->string('nome');
             $table->string('descricao');
 		});
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -36,6 +37,7 @@ class CreateCostAllocatesTable extends Migration {
 	public function down()
 	{
 		Schema::drop('cost_allocates');
+        echo get_class($this)." is down\n";
 	}
 
 }

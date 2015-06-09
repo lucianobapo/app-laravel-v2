@@ -1,5 +1,6 @@
 <?php namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class ConfigServiceProvider extends ServiceProvider {
@@ -15,6 +16,8 @@ class ConfigServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+//        dd(Auth::guest());
+//        dd(Auth::user()->name);
 		config([
 			//
 		]);

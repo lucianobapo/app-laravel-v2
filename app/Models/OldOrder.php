@@ -30,6 +30,17 @@ class OldOrder extends Model {
         return $results;
     }
 
+    public function listarItens($ordem) {
+        $results = DB::connection('mysql_erpnet')
+            ->select('select * from erpnet_ordem_item where id_ordem='.$ordem);
+        return $results;
+    }
+    public function listarWbs($id) {
+        $results = DB::connection('mysql_erpnet')
+            ->select('select * from erpnet_wbs where id='.$id);
+        return $results;
+    }
+
 
     public function listarOrdens($tipo='%', $conditions ='') {
         //$conditions ='';

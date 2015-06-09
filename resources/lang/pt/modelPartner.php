@@ -10,12 +10,10 @@ return array(
 	|
 	*/
 
-//	'articleCreated' => 'Seu artigo foi criado com sucesso!',
-//	'articleCreatedTitle' => 'Bom Trabalho',
-//	'articleUpdated' => 'Seu artigo foi atualizado com sucesso!',
-//	'articleUpdatedTitle' => 'Bom Trabalho',
+    'getPartnerList' => 'Endereço',
 
     'attributes' => array(
+        'id' => 'N° do Parceiro',
         'nome' => 'Nome',
         'data_nascimento' => 'Data de Nascimento',
         'tax_id' => 'CPF',
@@ -33,5 +31,7 @@ return array(
         'pagamentoCartaoDebito' => 'Cartão de Débito',
         'pagamentoCartaoCredito' => 'Cartão de Crédito',
         'troco' => 'Levar Troco para',
+        'grupos' => 'Grupos',
+        'status' => 'Status',
     ), // attributes
 );

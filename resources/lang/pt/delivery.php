@@ -21,7 +21,8 @@ return array(
         'cartTotal' => 'Valor Total',
         'cartBtn' => 'Fechar o Pedido',
         'logoAlt' => 'Logomarca do site',
-        'logoTitle' => 'SeuBoteco.com',
+//        'logoTitle' => 'SeuBoteco.com',
+        'logoTitle' => 'delivery.ilhanet.com',
     ],
 
     'head' => [
@@ -42,11 +43,12 @@ return array(
 
     'pedidos' => [
 //        'title' => 'Delivery Rio das Ostras 24 horas',
-//        'subTitle' => 'Frete grátis na entrega de Bebidas e Porções.',
+        'subTitle' => 'Confira seu pedido e solicite a entrega',
         'panelTitle' => 'Carrinho de compras',
         'panelEntregaTitle' => 'Dados de entrega',
         'panelGuestTitle' => 'Ainda não possui cadastro?',
         'cartEmpty' => 'Carrinho vazio.',
+        'valorTotal' => 'Valor total',
         'continueBtn' => 'Continue comprando',
         'finalizarBtn' => 'Enviar para Entrega',
         'emptyBtn' => 'Limpar Carrinho',

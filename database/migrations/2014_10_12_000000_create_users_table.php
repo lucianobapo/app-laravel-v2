@@ -42,6 +42,8 @@ class CreateUsersTable extends Migration {
 			$table->timestamps();
             $table->softDeletes();
 		});
+
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -52,6 +54,7 @@ class CreateUsersTable extends Migration {
 	public function down()
 	{
 		Schema::drop('users');
+        echo get_class($this)." is down\n";
 	}
 
 }

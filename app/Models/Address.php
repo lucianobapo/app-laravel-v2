@@ -35,4 +35,27 @@ class Address extends Model {
     public function partner(){
         return $this->belongsTo('Partner');
     }
+
+    /**
+     * Address can have many orders.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders(){
+        return $this->hasMany('Order');
+    }
+
+    /**
+     * Get the endereco attribute.
+     * @return string
+     */
+    public function getEnderecoAttribute() {
+
+        return $this->attributes['logradouro'].', '.$this->attributes['numero']
+            .(empty($this->attributes['complemento'])?'':' - '.$this->attributes['complemento'])
+            .(empty($this->attributes['bairro'])?'':' - '.$this->attributes['bairro']);
+            //.(empty($this->attributes['cep'])?'':' - CEP: '.$this->attributes['cep'])
+            //.(empty($this->attributes['cidade'])?'':' - '.$this->attributes['cidade'])
+            //.(empty($this->attributes['estado'])?'':'/'.$this->attributes['estado']);
+    }
+
 }

@@ -21,6 +21,7 @@ class CreateSharedUnitOfMeasuresTable extends Migration {
             $table->string('uom');
             $table->string('descricao');
 		});
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -31,6 +32,7 @@ class CreateSharedUnitOfMeasuresTable extends Migration {
 	public function down()
 	{
 		Schema::drop('shared_unit_of_measures');
+        echo get_class($this)." is down\n";
 	}
 
 }

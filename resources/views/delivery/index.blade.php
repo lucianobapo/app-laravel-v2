@@ -7,10 +7,12 @@
 @section('content')
     <div class="container-fluid">
         <div class="row text-center">
-            {!! Html::image('/img/seuboteco2.png', trans('delivery.nav.logoAlt'), [
+            {!! Html::image('/img/logo.png', trans('delivery.nav.logoAlt'), [
             'title'=>trans('delivery.nav.logoTitle'),
             'class'=>'img-responsive container-fluid']) !!}
-            {{--<h1 class="h1s">{{ trans('delivery.index.title') }}</h1>--}}
+            {{--<h1 class="h2s">{{ trans('delivery.index.subTitle') }}</h1>--}}
+
+            <h1 class="h1s">{{ trans('delivery.index.title') }}</h1>
             <h2 class="h2s">{{ trans('delivery.index.subTitle') }}</h2>
         </div>
         <div class="row">
@@ -22,7 +24,7 @@
                 <div class="panel-body">
                     <div class="text-right" id="btnPedido" style="margin: 10px 0px;">
                         @if(Session::has('cart'))
-                            {!! link_to_route('delivery.pedido', trans('delivery.nav.cartBtn'), $host, ['class'=>'btn btn-success']) !!}
+                            {!! link_to_route('delivery.pedido', trans('delivery.nav.cartBtn'), $host, ['class'=>'btn btn-success tooltipsted2']) !!}
                         @endif
                     </div>
                     {!! $panelBody !!}
@@ -91,6 +93,15 @@
                                 });
                                 $('#tooltipsted').tooltip('show');
                                 $('#tooltipsted').on('shown.bs.tooltip', function(){setTimeout(function () {$('#tooltipsted').tooltip('destroy');}, 1500);});
+
+                                $('.tooltipsted2').tooltip({
+                                    animation: true,
+                                    placement: 'left',
+                                    title: "{{ trans('delivery.productBlock.tooltip') }}",
+                                    trigger: 'manual'
+                                });
+                                $('.tooltipsted2').tooltip('show');
+                                $('.tooltipsted2').on('shown.bs.tooltip', function(){setTimeout(function () {$('.tooltipsted2').tooltip('destroy');}, 1500);});
 
                                 //resetting the form
                                 $('#form-add-setting').each (function(){

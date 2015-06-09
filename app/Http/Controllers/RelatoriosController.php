@@ -13,7 +13,7 @@ class RelatoriosController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index($host)
 	{
         $primeira_data = time();
         $primeira_data_diario = time();
@@ -35,6 +35,7 @@ class RelatoriosController extends Controller {
         }
 
         return view('relatorios.listar', compact(
+            'host',
             'receitas',
             'despesas',
             'lucro',
@@ -136,7 +137,7 @@ class RelatoriosController extends Controller {
             $soma = $soma + $datas[$ordem->data_termino];
         }
 
-        $mediaValor = $soma / count($datas);
+        $mediaValor = $soma / (($count=count($datas))?$count:1);
         $saidaMedia = '';
         $saida = '';
         foreach ($datas as $key => $valor) {

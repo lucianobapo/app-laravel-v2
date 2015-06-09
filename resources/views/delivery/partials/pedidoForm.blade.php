@@ -1,3 +1,4 @@
+@include ('errors.list')
 {!! Form::open([
     'url'=>route('delivery.addOrder', $host),
     'id'=>'form-add-setting',
@@ -16,20 +17,21 @@
     {!! Form::hidden('quantidade['.$row['id'].']',$row['qty']) !!}
     {!! Form::hidden('valor_unitario['.$row['id'].']',$row['price']) !!}
 @endforeach
-<em><span style="color:red;">*</span> {{ trans('delivery.pedidos.form.requiredTag') }}</em>
+
 <div>
+    <em><span style="color:red;">*</span> {{ trans('delivery.pedidos.form.requiredTag') }}</em>
     <h4 class="h4s">{{ trans('delivery.pedidos.form.formaPagamento') }}:</h4><hr>
 </div>
 <div class="row">
     <!-- Pagamento Form Input -->
     <div class="form-group col-sm-12" data-toggle="buttons">
-        {!! labelEx('pagamentoDinheiro', Form::radio('pagamento','dinheiro',true,['id'=>'pagamentoDinheiro']).
+        {!! labelEx('pagamentoDinheiro', Form::radio('pagamento','vistad',true,['id'=>'pagamentoDinheiro']).
         trans('modelPartner.attributes.pagamentoDinheiro') , ['class' => 'btn btn-default active radioButtonMobile']) !!}
 
-        {!! labelEx('pagamentoCartaoDebito', Form::radio('pagamento','cartaoDebito',null,['id'=>'pagamentoCartaoDebito']).
+        {!! labelEx('pagamentoCartaoDebito', Form::radio('pagamento','vistacd',null,['id'=>'pagamentoCartaoDebito']).
         trans('modelPartner.attributes.pagamentoCartaoDebito'), ['class' => 'btn btn-default radioButtonMobile']) !!}
 
-        {!! labelEx('pagamentoCartaoCredito', Form::radio('pagamento','cartaoCredito',null,['id'=>'pagamentoCartaoCredito']).
+        {!! labelEx('pagamentoCartaoCredito', Form::radio('pagamento','vistacc',null,['id'=>'pagamentoCartaoCredito']).
         trans('modelPartner.attributes.pagamentoCartaoCredito'), ['class' => 'btn btn-default radioButtonMobile']) !!}
     </div>
 </div>
@@ -53,8 +55,7 @@
         {!! labelEx('nome', trans('modelPartner.attributes.nome').' <span style="color:red;">*</span>') !!}
         {!! Form::text('nome', (Auth::guest())?null:Auth::user()->name, [
             'class'=>'form-control',
-            'required'=>true,
-            Auth::guest()?'enabled':'disabled'=>true,
+            Auth::guest()?'enabled':'enabled',
         ]) !!}
     </div>
     <!-- Tax_id Form Input -->
@@ -78,14 +79,12 @@
         {!! labelEx('email',trans('modelPartner.attributes.email').' <span style="color:red;">*</span>') !!}
         {!! Form::input('email','email', (Auth::guest())?null:Auth::user()->email,[
             'class'=>'form-control',
-            'required'=>true,
-            Auth::guest()?'enabled':'disabled'=>true,
+            Auth::guest()?'enabled':'enabled',
         ]) !!}
-        <div class="help-block with-errors"></div>
     </div>
     <!-- Telefone Form Input -->
     <div class="form-group col-sm-6">
-        {!! Form::label('telefone',trans('modelPartner.attributes.telefone') ) !!}
+        {!! labelEx('telefone',trans('modelPartner.attributes.telefone').' <span style="color:red;">*</span>') !!}
         {!! Form::text('telefone',null,['class'=>'form-control']) !!}
     </div>
 </div>
@@ -101,7 +100,6 @@
     <div class="form-group col-sm-3">
         {!! labelEx('cep',trans('modelPartner.attributes.cep').' <span style="color:red;">*</span>') !!}
         {!! Form::text('cep',null,['class'=>'form-control',
-            'required'=>true,
             'ng-disabled'=>"oldAddress",
             'placeholder'=>trans('delivery.pedidos.form.placeholder.cep')]) !!}
     </div>
@@ -109,12 +107,12 @@
     <div class="form-group col-sm-5">
         {!! labelEx('logradouro',trans('modelPartner.attributes.logradouro').' <span style="color:red;">*</span>') !!}
         {!! Form::text('logradouro',null,['class'=>'form-control',
-            'required'=>true, 'ng-disabled'=>"oldAddress",]) !!}
+            'ng-disabled'=>"oldAddress",]) !!}
     </div>
     <!-- Numero Form Input -->
     <div class="form-group col-sm-2">
         {!! labelEx('numero',trans('modelPartner.attributes.numero').' <span style="color:red;">*</span>') !!}
-        {!! Form::text('numero',null,['class'=>'form-control', 'required'=>true, 'ng-disabled'=>"oldAddress",]) !!}
+        {!! Form::text('numero',null,['class'=>'form-control', 'ng-disabled'=>"oldAddress",]) !!}
     </div>
     <!-- Complemento Form Input -->
     <div class="form-group col-sm-2">
@@ -148,7 +146,7 @@
 <div class="row">
     <!-- Finalizar Form Input -->
     <div class="form-group col-sm-3">
-        {!! Form::submit(trans('delivery.pedidos.finalizarBtn'),['class'=>'btn btn-success form-control']) !!}
+        {!! Form::submit(trans('delivery.pedidos.finalizarBtn'),['class'=>'btn btn-success form-control', 'click-once'=>trans('delivery.clickOnce')]) !!}
     </div>
 </div>
 

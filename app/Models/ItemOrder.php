@@ -14,6 +14,7 @@ class ItemOrder extends Model {
         'order_id',
         'cost_id',
         'product_id',
+        'currency_id',
         'quantidade',
         'valor_unitario',
         'desconto_unitario',
@@ -38,5 +39,22 @@ class ItemOrder extends Model {
         return $this->belongsTo('Product');
     }
 
+    /**
+     * An Item Order belongs to an CostAllocate.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function cost() {
+        return $this->belongsTo('CostAllocate');
+    }
+
+    /**
+     * An Item Order belongs to an SharedCurrency.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency() {
+        return $this->belongsTo('SharedCurrency');
+    }
 
 }

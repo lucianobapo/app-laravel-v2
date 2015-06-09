@@ -30,6 +30,13 @@ class CreateOrdersTable extends Migration {
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
+            $table->integer('address_id')->unsigned()->index()->nullable();
+            $table->foreign('address_id')
+                ->references('id')
+                ->on('addresses')
+                ->onDelete('restrict')
+                ->onUpdate('cascade');
+
             $table->integer('currency_id')->unsigned()->index()->nullable();
             $table->foreign('currency_id')
                 ->references('id')
@@ -37,21 +44,22 @@ class CreateOrdersTable extends Migration {
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
-            $table->integer('shared_order_type_id')->unsigned()->index()->nullable();
-            $table->foreign('shared_order_type_id')
+            $table->integer('type_id')->unsigned()->index()->nullable();
+            $table->foreign('type_id')
                 ->references('id')
                 ->on('shared_order_types')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
-            $table->integer('shared_order_payment_id')->unsigned()->index()->nullable();
-            $table->foreign('shared_order_payment_id')
+            $table->integer('payment_id')->unsigned()->index()->nullable();
+            $table->foreign('payment_id')
                 ->references('id')
                 ->on('shared_order_payments')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
 
+            $table->timestamp('posted_at');
             $table->float('valor_total')->nullable();
             $table->float('desconto_total')->nullable();
             $table->float('troco')->nullable();
@@ -77,7 +85,11 @@ class CreateOrdersTable extends Migration {
             $table->text('descricao')->nullable();
             $table->string('referencia')->nullable();
             $table->string('obsevacao')->nullable();
+
+            //temporario
+            $table->integer('old_id')->index()->nullable();
 		});
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -88,6 +100,7 @@ class CreateOrdersTable extends Migration {
 	public function down()
 	{
 		Schema::drop('orders');
+        echo get_class($this)." is down\n";
 	}
 
 }

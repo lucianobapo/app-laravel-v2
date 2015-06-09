@@ -22,6 +22,8 @@ return array(
         'nome' => 'Nome',
         'imagem' => 'Imagem',
         'promocao' => 'Promoção',
+        'grupos' => 'Grupos',
+        'status' => 'Status',
         'valorUnitVenda' => 'Valor de Venda',
         'valorUnitVendaPromocao' => 'Valor de Promoção',
         'valorUnitCompra' => 'Valor de Compra',

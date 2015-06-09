@@ -20,6 +20,7 @@ class CreateTrafficTable extends Migration {
             $table->json('user_info');
             $table->json('server_info');
 		});
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -30,6 +31,7 @@ class CreateTrafficTable extends Migration {
 	public function down()
 	{
 		Schema::drop('traffic');
+        echo get_class($this)." is down\n";
 	}
 
 }

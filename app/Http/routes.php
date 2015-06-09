@@ -64,23 +64,29 @@ Route::group([
     'where' => ['host' => 'laravel'],
 ], function(){
     // ERP
+
+    // Temporário
+    Route::get('relatorios', ['as'=>'relatorios.index', 'uses'=>'RelatoriosController@index']);
+
     //Route::get('ordens', ['as'=>'ordens.index', 'uses'=>'OrdensController@index']);
     Route::resource('orders','OrdersController', [
         'names' => [
             'index'=>'orders.index',
 //            'show'=>'orders.show',
-//            'create'=>'orders.create',
-//            'store'=>'orders.store',
-//            'edit'=>'orders.edit',
-//            'update'=>'orders.update',
+            'create'=>'orders.create',
+            'store'=>'orders.store',
+            'edit'=>'orders.edit',
+            'update'=>'orders.update',
+            'destroy'=>'orders.destroy',
         ],
         'only'=>[
             'index',
 //            'show',
-//            'create',
-//            'store',
-//            'edit',
-//            'update',
+            'create',
+            'store',
+            'edit',
+            'update',
+            'destroy',
         ],
     ]);
 
@@ -89,6 +95,19 @@ Route::group([
             'index'=>'products.index',
             'store'=>'products.store',
             'destroy'=>'products.destroy',
+        ],
+        'only'=>[
+            'index',
+            'store',
+            'destroy',
+        ],
+    ]);
+
+    Route::resource('partners','PartnersController', [
+        'names' => [
+            'index'=>'partners.index',
+            'store'=>'partners.store',
+            'destroy'=>'partners.destroy',
         ],
         'only'=>[
             'index',
@@ -109,8 +128,7 @@ Route::group([
     ]);
 });
 
-// Temporário
-Route::get('relatorios', ['as'=>'relatorios.index', 'uses'=>'RelatoriosController@index']);
+
 
 // Application core
 Route::get('/', ['as'=>'index', 'uses'=>'WelcomeController@index']);

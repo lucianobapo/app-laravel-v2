@@ -13,22 +13,30 @@ class DatabaseSeeder extends Seeder {
 	public function run()
 	{
 		Model::unguard();
+//        dd(get_class($this));
 
-//		$this->call('UsersTableSeeder');
-
-//        $this->call('TagsTableSeeder');
-//		$this->call('ArticlesTableSeeder');
+//////        $this->call('TagsTableSeeder');
+//////		$this->call('ArticlesTableSeeder');
 
 		$this->call('SharedCurrenciesTableSeeder');
-//		$this->call('SharedOrderPaymentsTableSeeder');
-//		$this->call('SharedOrderTypesTableSeeder');
+		$this->call('SharedOrderPaymentsTableSeeder');
+		$this->call('SharedOrderTypesTableSeeder');
 		$this->call('SharedUnitOfMeasuresTableSeeder');
 
-		$this->call('ProductsTableSeeder');
-//		$this->call('CostAllocatesTableSeeder');
-//		$this->call('PartnersTableSeeder');
-//		$this->call('AddressesTableSeeder');
+        $this->call('SharedStatsTableSeeder');
 
+        $this->call('CostAllocatesTableSeeder');
+
+        $this->call('ProductsTableSeeder');
+        $this->call('ProductGroupsTableSeeder');
+
+        $this->call('PartnerGroupsTableSeeder');
+		$this->call('PartnersTableSeeder');
+        $this->call('UsersTableSeeder');
+
+		$this->call('AddressesTableSeeder');
+		$this->call('OrdersTableSeeder');
+		$this->call('PurchaseOrdersTableSeeder');
 	}
 
 }

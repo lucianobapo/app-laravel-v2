@@ -47,10 +47,6 @@ class CreateItemOrdersTable extends Migration {
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
-            $table->float('quantidade');
-
-            $table->float('valor_unitario');
-            $table->float('desconto_unitario')->nullable();
             $table->integer('currency_id')->unsigned()->index()->nullable();
             $table->foreign('currency_id')
                 ->references('id')
@@ -58,8 +54,13 @@ class CreateItemOrdersTable extends Migration {
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
+            $table->float('quantidade');
+
+            $table->float('valor_unitario');
+            $table->float('desconto_unitario')->nullable();
             $table->text('descricao')->nullable();
 		});
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -70,6 +71,7 @@ class CreateItemOrdersTable extends Migration {
 	public function down()
 	{
 		Schema::drop('item_orders');
+        echo get_class($this)." is down\n";
 	}
 
 }

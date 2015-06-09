@@ -66,31 +66,33 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param  array  $attributes
      * @return static
      */
-    public static function create(array $attributes)
+    public static function create(array $attributes, $criaPartner=true)
     {
-        $attributes['mandante'] = 'teste';
+        if (!isset($attributes['mandante'])) $attributes['mandante'] = config('app.mandante');
         $model = new static($attributes);
 //        \Debugbar::info($model);
 //        dd($model);
         $model->save();
 
-        static::createPartner($model);
+        if ($criaPartner) static::createPartner($model);
         return $model;
     }
 
     private static function createPartner($user){
         $addedPartner = (new Partner)->firstOrCreate([
-            'mandante' => 'teste',
+            'mandante' => $user->mandante,
             'user_id' => $user->id,
             'nome' => $user->name,
         ]);
 
+        \Debugbar::info($addedPartner);
         $addedContact = (new Contact)->firstOrCreate([
-            'mandante' => 'teste',
+            'mandante' => $user->mandante,
             'partner_id' => $addedPartner->id,
             'contact_type' => 'email',
             'contact_data' => $user->email,
         ]);
+        \Debugbar::info($addedContact);
 
 //        $addedPartner->user()->save($addedPartner);
 //        $user->partner()->save($addedPartner);

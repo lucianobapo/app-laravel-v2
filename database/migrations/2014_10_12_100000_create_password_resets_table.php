@@ -18,6 +18,7 @@ class CreatePasswordResetsTable extends Migration {
 			$table->string('token')->index();
 			$table->timestamp('created_at');
 		});
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -28,6 +29,7 @@ class CreatePasswordResetsTable extends Migration {
 	public function down()
 	{
 		Schema::drop('password_resets');
+        echo get_class($this)." is down\n";
 	}
 
 }

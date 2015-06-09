@@ -14,7 +14,7 @@
                 'ng-click'=>"oldAddress=true",
             ]) !!}
         @endforeach
-        {!! labelEx('novo', Form::radio('address_id','',true,['id'=>'novo']).trans('delivery.pedidos.form.createAddress') , [
+        {!! labelEx('novo', Form::radio('address_id','novo',true,['id'=>'novo']).trans('delivery.pedidos.form.createAddress') , [
             'class' => 'form-control btn btn-default active radioButtonMobile',
             'style' => 'text-align: left;',
             'ng-init'=>"oldAddress=false",

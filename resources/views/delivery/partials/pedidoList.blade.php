@@ -1,17 +1,21 @@
 <div class="" style="list-style-type: none; padding: 0px;">
     @foreach($cart as $row)
         @if($product = $product->where(['id' => $row['id']])->first())
-            <div class="col-sm-2" style="min-width: 200px; float: none; display: inline-block; vertical-align: top; padding: 0px; margin: 0px 5px;">
+            <div class="col-sm-2 well" style="min-width: 200px;
+                float: none; display: inline-block; vertical-align: top; padding: 0px; margin: 5px 5px;">
                 @include('delivery.partials.productBlock')
                 <div style="padding: 5px;">
                     <strong>
                         {{ $row['qty'] }}x -> {{ formatBRL($row['subtotal']) }}
-
                     </strong>
                 </div>
             </div>
         @endif
     @endforeach
+    <div>
+        <h3>{!! trans('delivery.pedidos.valorTotal').': <strong>'.$totalCart.'</strong>' !!}</h3>
+    </div>
+
 </div>
 <div class="row">
     <div class="col-sm-3" style="margin: 20px 0px">

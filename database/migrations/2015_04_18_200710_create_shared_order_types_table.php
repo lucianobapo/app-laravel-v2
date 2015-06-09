@@ -21,6 +21,7 @@ class CreateSharedOrderTypesTable extends Migration {
             $table->string('tipo')->index();
             $table->string('descricao')->nullable();
 		});
+        echo get_class($this)." is up\n";
 
 //        Schema::create('orders_has_shared_order_types',function(Blueprint $table){
 //            $table->timestamps();
@@ -48,7 +49,12 @@ class CreateSharedOrderTypesTable extends Migration {
 	public function down()
 	{
 //		Schema::drop('orders_has_shared_order_types');
+        if (DB::connection()->getName()=='mysql')
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0'); // disable foreign key constraints
 		Schema::drop('shared_order_types');
+        if (DB::connection()->getName()=='mysql')
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1'); // enable foreign key constraints
+        echo get_class($this)." is down\n";
 	}
 
 }

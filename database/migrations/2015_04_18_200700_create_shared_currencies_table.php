@@ -22,6 +22,8 @@ class CreateSharedCurrenciesTable extends Migration {
             $table->string('descricao');
 		});
 
+        echo get_class($this)." is up\n";
+
 //        Schema::create('orders_has_shared_currencies',function(Blueprint $table){
 //            $table->timestamps();
 //
@@ -64,7 +66,12 @@ class CreateSharedCurrenciesTable extends Migration {
 	{
 //        Schema::drop('orders_has_shared_currencies');
 //        Schema::drop('item_orders_has_shared_currencies');
+        if (DB::connection()->getName()=='mysql')
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0'); // disable foreign key constraints
         Schema::drop('shared_currencies');
+        if (DB::connection()->getName()=='mysql')
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1'); // enable foreign key constraints
+        echo get_class($this)." is down\n";
 	}
 
 }

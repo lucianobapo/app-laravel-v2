@@ -19,7 +19,7 @@ class SharedCurrenciesController extends Controller {
      * @param CacheRepository $cache
      */
     public function __construct(CacheRepository $cache) {
-        $this->middleware('auth');
+//        $this->middleware('auth');
 //        $this->middleware('auth',['except'=> ['index','show']]);
 //        $this->middleware('guest',['only'=> ['index','show']]);
 

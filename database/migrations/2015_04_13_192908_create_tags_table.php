@@ -30,6 +30,7 @@ class CreateTagsTable extends Migration {
                 ->on('tags')
                 ->onDelete('cascade');
         });
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -41,6 +42,7 @@ class CreateTagsTable extends Migration {
 	{
         Schema::drop('article_tag');
         Schema::drop('tags');
+        echo get_class($this)." is down\n";
 	}
 
 }

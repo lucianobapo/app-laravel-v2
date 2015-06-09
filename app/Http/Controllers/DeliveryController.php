@@ -2,15 +2,19 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeliveryRequest;
 use App\Models\Address;
 use App\Models\Contact;
+use App\Models\CostAllocate;
 use App\Models\ItemOrder;
 use App\Models\Order;
 use App\Models\Partner;
 use App\Models\Product;
 
+use App\Models\SharedCurrency;
 use App\Models\SharedOrderPayment;
 use App\Models\SharedOrderType;
+use Carbon\Carbon;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Cache\Repository as CacheRepository;
 
@@ -41,7 +45,6 @@ class DeliveryController extends Controller {
 
     /**
      * @param CacheRepository $cache
-     * @param RuntimeFormat $format
      */
     public function __construct(CacheRepository $cache) {
 //        $this->middleware('auth',['except'=> ['index','show']]);
@@ -65,8 +68,11 @@ class DeliveryController extends Controller {
             $totalCart = 0;
             $cartView = view('delivery.partials.cartVazio');
         }
-        if(count($products = $product->all())) {
-            $panelBody = view('delivery.partials.productList', compact('products', 'host'));
+
+        if(count($products = $product->filtraCachedGroup('Delivery', $this->cache))) {
+            $panelBody = view('delivery.partials.productList', compact('host'))->with([
+                'products' => $products,//->orderBy('nome', 'asc' ),
+            ]);
         } else {
             $panelBody = trans('delivery.index.semProdutos');
         }
@@ -97,7 +103,7 @@ class DeliveryController extends Controller {
                 'cart' => Cart::content()->toArray(),
             ])->render(),
             'total' => formatBRL(Cart::total()),
-            'btnPedido' => link_to_route('delivery.pedido', trans('delivery.nav.cartBtn'), $host, ['class'=>'btn btn-success']),
+            'btnPedido' => link_to_route('delivery.pedido', trans('delivery.nav.cartBtn'), $host, ['class'=>'btn btn-success tooltipsted2']),
         ]);
         else return redirect(route('delivery.index', $host));
     }
@@ -127,8 +133,11 @@ class DeliveryController extends Controller {
             $cartView = view('delivery.partials.cart', compact('host'))->with([
                 'cart' => Cart::content()->toArray(),
             ]);
-            $panelBody = view('delivery.partials.pedidoList', compact('product', 'host'))->with([
+            $panelBody = view('delivery.partials.pedidoList', compact(
+                'product', 'host', 'totalCart'
+            ))->with([
                 'cart' => Cart::content()->toArray(),
+
             ]);
             $panelFormBody = view('delivery.partials.pedidoForm', compact('product', 'host'))->with([
                 'cart' => Cart::content()->toArray(),
@@ -150,7 +159,7 @@ class DeliveryController extends Controller {
             'panelGuest'
         ))->with([
             'panelTitle' => trans('delivery.pedidos.panelTitle'),
-            'brand'=>app('html')->image('/img/seuboteco2.png', trans('delivery.nav.logoAlt'), [
+            'brand'=>app('html')->image('/img/logo.png', trans('delivery.nav.logoAlt'), [
                 'title'=>trans('delivery.nav.logoTitle'),
                 'style'=>'max-height: 100%;']),
         ]);
@@ -178,33 +187,40 @@ class DeliveryController extends Controller {
         }
     }
 
-    public function addOrder(Request $request, $host,
-                             ItemOrder $itemOrder,
+    public function addOrder(DeliveryRequest $request, $host,
+                             ItemOrder $itemOrder, CostAllocate $costAllocate,
                              Product $product, SharedOrderType $sharedOrderType,
-                             SharedOrderPayment $sharedOrderPayment){
+                             SharedOrderPayment $sharedOrderPayment, SharedCurrency $sharedCurrency){
 
         $attributes = $request->all();
 //        dd($attributes);
 
         //Adicionando a Ordem
         $addedOrder = $this->getAddedOrder($attributes);
+//        dd($addedOrder->save());
+
 
         //Atributos da ordem
         $sharedOrderType->firstOrCreate(['tipo'=>'ordemVenda'])->orders()->save($addedOrder);
         $sharedOrderPayment->firstOrCreate(['pagamento'=>$attributes['pagamento']])->orders()->save($addedOrder);
+
+        //Adicionando Status Aberto
+        $this->syncStatus($addedOrder, [0=>'1']);
 
         // Adicionando Partner
         $addedPartner = $this->getAddedPartner($attributes);
         $addedPartner->orders()->save($addedOrder);
 
         //Adicionando o endereço
-        $addedPartner->addresses()->save($this->getAddedAddress($attributes));
+        $addedAddress = $this->getAddedAddress($attributes);
+        $addedPartner->addresses()->save($addedAddress);
+        $addedAddress->orders()->save($addedOrder);
 
         //Adicionando os contatos
         if (!empty($attributes['email'])) {
             $addedPartner->contacts()->save(
                 Contact::firstOrCreate([
-                    'mandante' => 'teste',
+                    'mandante' => Auth::check()?Auth::user()->mandante:config('app.mandante'),
                     'partner_id' => $addedPartner->id,
                     'contact_type' => 'email',
                     'contact_data' => $attributes['email']
@@ -213,7 +229,7 @@ class DeliveryController extends Controller {
         if (!empty($attributes['telefone'])) {
             $addedPartner->contacts()->save(
                 Contact::firstOrCreate([
-                    'mandante' => 'teste',
+                    'mandante' => Auth::check()?Auth::user()->mandante:config('app.mandante'),
                     'partner_id' => $addedPartner->id,
                     'contact_type' => 'telefone',
                     'contact_data' => $attributes['telefone']
@@ -224,6 +240,10 @@ class DeliveryController extends Controller {
         //Adicionando os itens do pedido
         foreach ($attributes['quantidade'] as $key => $quantidade) {
             $addedItemOrder = $this->getAddedItemOrder($quantidade, $attributes['valor_unitario'][$key]);
+
+            $costAllocate->firstOrCreate(['nome'=>'Mercadorias'])->itemOrders()->save($addedItemOrder);
+            $sharedCurrency->firstOrCreate(['nome_universal'=>'BRL'])->itemOrders()->save($addedItemOrder);
+//            dd($costAllocate->firstOrCreate(['nome'=>'Mercadorias'])->itemOrders());
             $addedOrder->orderItems()->save($addedItemOrder);
             $product->find($key)->itemOrders()->save($addedItemOrder);
         }
@@ -240,9 +260,9 @@ class DeliveryController extends Controller {
      */
     private function getAddedAddress(array $attributes)
     {
-        if ( (Auth::guest()) || empty($attributes['address_id']) ){
+        if ( (Auth::guest()) || ($attributes['address_id']=='novo') ){
             $addressAttribute = [
-                'mandante' => 'teste',
+                'mandante' => Auth::check()?Auth::user()->mandante:config('app.mandante'),
                 'cep' => $attributes['cep'],
                 'logradouro' => $attributes['logradouro'],
                 'numero' => $attributes['numero'],
@@ -276,11 +296,10 @@ class DeliveryController extends Controller {
 //        return (new Partner)->getAddedPartner($attributes);
         if (Auth::guest()){
             $partnerAttribute = [
-                'mandante' => 'teste',
+                'mandante' => config('app.mandante'),
                 'nome' => $attributes['nome'],
             ];
             if (!empty($attributes['data_nascimento'])) $partnerAttribute['data_nascimento'] = $attributes['data_nascimento'];
-            if (!empty($attributes['cpf'])) $partnerAttribute['cpf'] = $attributes['cpf'];
             return Partner::create($partnerAttribute);
         } else {
             return Partner::firstByAttributes(['user_id' => Auth::user()->id]);
@@ -295,7 +314,11 @@ class DeliveryController extends Controller {
     private function getAddedOrder($attributes)
     {
         $orderAttribute = [
-            'mandante' => 'teste',
+            'mandante' => Auth::check()?Auth::user()->mandante:config('app.mandante'),
+            'posted_at' => Carbon::now(),
+            'currency_id' => SharedCurrency::where(['nome_universal'=>'BRL'])->first()->id,
+//            'shared_order_type_id' => SharedOrderType::where(['tipo'=>'ordemVenda'])->first()->id,
+//            'payment_id' => SharedOrderPayment::where(['pagamento'=>$attributes['pagamento']])->first()->id,
             'valor_total' => $attributes['total'],
         ];
         if (!empty($attributes['troco'])) $orderAttribute['troco'] = $attributes['troco'];
@@ -310,11 +333,21 @@ class DeliveryController extends Controller {
     private function getAddedItemOrder($quantidade, $valor)
     {
         $itemOrderAttribute = [
-            'mandante' => 'teste',
+            'mandante' => Auth::check()?Auth::user()->mandante:config('app.mandante'),
             'quantidade' => $quantidade,
             'valor_unitario' => $valor,
         ];
         return new ItemOrder($itemOrderAttribute);
+    }
+
+    /**
+     * Sync up a list of status in the database.
+     *
+     * @param Order $order
+     * @param array $status
+     */
+    private function syncStatus(Order $order, $status) {
+        $order->status()->sync(is_null($status)?[]:$status);
     }
 
 }

@@ -14,7 +14,7 @@ class SharedOrderPayment extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orders(){
-        return $this->hasMany('Order');
+        return $this->hasMany('Order','payment_id');
     }
 
 }

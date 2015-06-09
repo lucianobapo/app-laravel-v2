@@ -21,6 +21,7 @@ class CreateSharedOrderPaymentsTable extends Migration {
             $table->string('pagamento')->index();
             $table->string('descricao')->nullable();
 		});
+        echo get_class($this)." is up\n";
 
 //        Schema::create('orders_has_shared_order_payments',function(Blueprint $table){
 //            $table->timestamps();
@@ -47,7 +48,12 @@ class CreateSharedOrderPaymentsTable extends Migration {
 	public function down()
 	{
 //		Schema::drop('orders_has_shared_order_payments');
+        if (DB::connection()->getName()=='mysql')
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0'); // disable foreign key constraints
 		Schema::drop('shared_order_payments');
+        if (DB::connection()->getName()=='mysql')
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1'); // enable foreign key constraints
+        echo get_class($this)." is down\n";
 	}
 
 }

@@ -46,6 +46,6 @@ class ProductRequest extends Request {
                 'valorUnitCompra'=> trans('modelProduct.attributes.valorUnitCompra'),
                 'promocao'=> trans('modelProduct.attributes.promocao'),
             ],
-            'product');
+            'Product');
     }
 }

@@ -3,7 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Tag;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class TagsController extends Controller {

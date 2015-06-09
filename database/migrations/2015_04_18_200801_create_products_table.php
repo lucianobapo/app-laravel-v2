@@ -27,13 +27,25 @@ class CreateProductsTable extends Migration {
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
+            $table->integer('cost_id')->unsigned()->index()->nullable();
+            $table->foreign('cost_id')
+                ->references('id')
+                ->on('cost_allocates')
+                ->onDelete('restrict')
+                ->onUpdate('cascade');
+
             $table->string('nome');
             $table->string('imagem')->nullable();
+            $table->string('cod_fiscal')->nullable();
+            $table->string('cod_barra')->nullable();
             $table->boolean('promocao')->default(0);
             $table->float('valorUnitVenda')->nullable();
             $table->float('valorUnitVendaPromocao')->nullable();
             $table->float('valorUnitCompra')->nullable();
+            //temporario
+            $table->integer('old_id')->index()->nullable();
 		});
+        echo get_class($this)." is up\n";
 	}
 
 	/**
@@ -44,6 +56,7 @@ class CreateProductsTable extends Migration {
 	public function down()
 	{
 		Schema::drop('products');
+        echo get_class($this)." is down\n";
 	}
 
 }
