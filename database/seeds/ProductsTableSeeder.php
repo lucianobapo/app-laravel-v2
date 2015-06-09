@@ -28,7 +28,7 @@ class ProductsTableSeeder extends Seeder
         foreach($oldProducts as $product){
             $uomId = SharedUnitOfMeasure::where(['uom'=>$product->uom])->first()->id;
             $fileName = null;
-            $fileUrl = '/var/www/appyii_v1/images/'.$product->id.'.png';
+            $fileUrl = env('SEED_OLD_IMAGES_PATH','/var/www/appyii_v1/').'images/'.$product->id.'.png';
             $fileUrlResized = env('SEED_OLD_IMAGES_PATH','/var/www/appyii_v1/').'images/resized-'.$product->id.'.png';
             if (file_exists($fileUrl)) {
                 $fileName = 'imagem-de-'.str_slug($product->descricao).'.png';
