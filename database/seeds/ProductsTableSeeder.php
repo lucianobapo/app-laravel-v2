@@ -38,7 +38,7 @@ class ProductsTableSeeder extends Seeder
                 $image->save($fileUrlResized,IMAGETYPE_PNG);
                 if (!Storage::exists($imageDir)) Storage::makeDirectory($imageDir);
                 Storage::put($imageDir . $fileName, file_get_contents($fileUrlResized));
-            }
+            } else dd($fileUrl);
 
 
             $newProduct = Product::create([
