@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\Partner;
 use App\Models\Product;
 
+use App\Models\ProductGroup;
 use App\Models\SharedCurrency;
 use App\Models\SharedOrderPayment;
 use App\Models\SharedOrderType;
@@ -69,7 +70,9 @@ class DeliveryController extends Controller {
             $cartView = view('delivery.partials.cartVazio');
         }
 
-        if(count($products = $product->filtraCachedGroup('Delivery', $this->cache))) {
+//        'partners' => ProductGroup::where(['grupo'=>'Delivery'])->first()->products()->get(),
+//        if(count($products = $product->filtraCachedGroup('Delivery', $this->cache))) {
+        if(count($products = ProductGroup::where(['grupo'=>'Delivery'])->first()->products()->get() ) ) {
             $panelBody = view('delivery.partials.productList', compact('host'))->with([
                 'products' => $products,//->orderBy('nome', 'asc' ),
             ]);

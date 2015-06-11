@@ -26,7 +26,7 @@ class PartnersController extends Controller {
 
         return view('partners.index', compact('host'))->with([
 //            'partners' => $partner->all(),
-            'partners' => $partner->paginate(10)->appends($params),
+            'partners' => $partner->with('groups','status')->paginate(10)->appends($params),
             'params' => ['host'=>$host]+$params,
             'grupos'=> PartnerGroup::lists('grupo','id'),
             'status' => SharedStat::lists('descricao','id'),

@@ -38,7 +38,7 @@
                     <td>{{ $order->payment->descricao }}</td>
                     <td>{{ $order->status_list }}</td>
                     <td>
-                        @if(!count($order->status()->where('status', 'finalizado')->get()))
+                        @if(stripos($order->status_list,'Finalizado')===false)
                             {!! sprintf( link_to_route('orders.edit', '%s', [$host,$order->id], [
                             'title'=>trans('order.actionEditTitle'),
                             ]), '<span class="glyphicon glyphicon-pencil"></span>' ) !!}

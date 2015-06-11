@@ -59,7 +59,8 @@ class OrdersController extends Controller {
 
         return view('orders.index', compact('host'))->with([
 //            'orders' => $order->all(),
-            'orders' => $order->paginate(3)->appends($params),
+            'orders' => $order->with('partner','currency','type','payment','status','address','orderItems','orderItems.product','orderItems.cost','orderItems.currency')
+                ->paginate(3)->appends($params),
             'params' => ['host'=>$host]+$params,
 //            'orders' => $order->cachedAll($this->cache),
 //            'cache' => $this->cache,

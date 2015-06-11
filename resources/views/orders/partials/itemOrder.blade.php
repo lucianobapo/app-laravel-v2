@@ -9,7 +9,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($order->orderItems()->get() as $item)
+        @foreach($order->orderItems as $item)
             <tr>
                 <td>{{ $item->product->nome }}</td>
                 <td>{{ $item->cost->cost }}</td>

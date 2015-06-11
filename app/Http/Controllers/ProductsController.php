@@ -36,7 +36,8 @@ class ProductsController extends Controller {
 
         return view('products.index', compact('host'))->with([
 //            'products' => $product->all(),
-            'products' => $product->paginate(10)->appends($params),
+            'products' => $product->with('groups','status')->paginate(10)->appends($params),
+//            'products' => $product->paginate()->appends($params),
             'params' => ['host'=>$host]+$params,
             'grupos'=> ProductGroup::lists('grupo','id'),
             'status'=> SharedStat::lists('descricao','id'),

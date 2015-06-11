@@ -57,32 +57,32 @@ class Product extends Model {
         return substr($lista, 0, -2);
     }
 
-    public function filtraCachedGroup($filtro, CacheRepository $cache) {
-        $this->filtro=$filtro;
-        $cacheKey = 'getCachedFiltraGrupo234'.str_slug($filtro).md5($this->select(DB::raw('max(updated_at), count(id)'))->first()->toJson());
-        if (!$cache->has($cacheKey)) {
-            $filtered = $this->orderBy('promocao', 'desc' )->orderBy('nome', 'asc' )->get()->filter(function($item) {
-                $found = false;
-                foreach ($item->groups->toArray() as $group) {
-                    if (array_search($this->filtro,$group)) $found = true;
-                }
-                if ($found) return $item;
-            });
-            $cache->put($cacheKey, $filtered, config('cache.queryCacheTimeMinutes'));
-        }
-        return $cache->get($cacheKey);
-    }
+//    public function filtraCachedGroup($filtro, CacheRepository $cache) {
+//        $this->filtro=$filtro;
+//        $cacheKey = 'getCachedFiltraGrupo234'.str_slug($filtro).md5($this->select(DB::raw('max(updated_at), count(id)'))->first()->toJson());
+//        if (!$cache->has($cacheKey)) {
+//            $filtered = $this->orderBy('promocao', 'desc' )->orderBy('nome', 'asc' )->get()->filter(function($item) {
+//                $found = false;
+//                foreach ($item->groups->toArray() as $group) {
+//                    if (array_search($this->filtro,$group)) $found = true;
+//                }
+//                if ($found) return $item;
+//            });
+//            $cache->put($cacheKey, $filtered, config('cache.queryCacheTimeMinutes'));
+//        }
+//        return $cache->get($cacheKey);
+//    }
 
-    public function filtraGroup($filtro) {
-        $this->filtro=$filtro;
-        return $this->all()->filter(function($item) {
-            $found = false;
-            foreach ($item->groups->toArray() as $group) {
-                if (array_search($this->filtro,$group)) $found = true;
-            }
-            if ($found) return $item;
-        });
-    }
+//    public function filtraGroup($filtro) {
+//        $this->filtro=$filtro;
+//        return $this->all()->filter(function($item) {
+//            $found = false;
+//            foreach ($item->groups->toArray() as $group) {
+//                if (array_search($this->filtro,$group)) $found = true;
+//            }
+//            if ($found) return $item;
+//        });
+//    }
 
 //    public function getCachedLatestPublished(CacheRepository $cache){
 //        $cacheKey = 'getCachedLatestPublished'.md5($this->select(DB::raw('max(updated_at), count(id)'))->first()->toJson());
